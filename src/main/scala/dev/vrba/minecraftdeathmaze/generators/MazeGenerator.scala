@@ -1,20 +1,19 @@
 package dev.vrba.minecraftdeathmaze.generators
 
-import scala.annotation.tailrec
 import scala.util.Random
 
 object MazeGenerator {
 
-  private case class Direction(x: Int, y: Int)
+  case class Direction(x: Int, y: Int)
 
-  private case class MazeNodeDoor(from: MazeNode, to: MazeNode)
+  case class MazeNodeDoor(from: MazeNode, to: MazeNode)
 
-  private case class MazeNode(x: Int, y: Int) {
+  case class MazeNode(x: Int, y: Int) {
     def +(direction: Direction): MazeNode = MazeNode(x + direction.x, y + direction.y)
   }
 
   // This code is assuming the maze is always square
-  private case class Maze(size: Int, nodes: Set[MazeNode], doors: Set[MazeNodeDoor]) {
+  case class Maze(size: Int, nodes: Set[MazeNode], doors: Set[MazeNodeDoor]) {
     private val directions = Set(
       Direction(-1, 0),
       Direction(0, -1),
