@@ -1,0 +1,7 @@
+name: Death Maze
+version: ${project.version}
+main: dev.vrba.minecraftdeathmaze.DeathMaze
+api-version: 1.16
+prefix: DEATH_MAZE
+authors: [0x4a69726b61]
+website: https://vrba.dev/minecraft/death-maze
