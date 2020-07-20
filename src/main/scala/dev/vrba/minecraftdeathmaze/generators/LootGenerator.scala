@@ -13,12 +13,11 @@ object LootGenerator {
   private case class WeightedItem(stack: ItemStack, weight: Int)
 
   private implicit class ItemStackOps(stack: ItemStack) {
-    def withRandomDurability: ItemStack = when(stack.getItemMeta) {
-      case meta: Damageable => {
+    def withRandomDurability: ItemStack = stack.getItemMeta match {
+      case meta: Damageable =>
         meta.setDamage(Random.nextInt(stack.getType.getMaxDurability))
         stack.setItemMeta(meta.asInstanceOf[ItemMeta])
         stack
-      }
       case _ => stack
     }
 
@@ -35,7 +34,9 @@ object LootGenerator {
     var accumulator = 0
 
     items foreach { item =>
-      if ((accumulator += item.weight) >= selected)
+      accumulator += item.weight
+
+      if (accumulator >= selected)
         return item.stack
     }
 
