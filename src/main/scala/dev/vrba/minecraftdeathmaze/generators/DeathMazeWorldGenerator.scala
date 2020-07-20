@@ -1,8 +1,8 @@
 package dev.vrba.minecraftdeathmaze.generators
 
 import org.bukkit.Material._
-import org.bukkit.generator.ChunkGenerator
 import org.bukkit._
+import org.bukkit.generator.ChunkGenerator
 
 import scala.util.Random
 
@@ -38,7 +38,7 @@ object DeathMazeWorldGenerator {
            y <- start.getBlockY to end.getBlockY;
            z <- start.getBlockZ to end.getBlockZ)
       // Fill each block within the selected region
-        start.getWorld.getBlockAt(x, y, z).setType(Random.shuffle(materials).head)
+        start.getWorld.getBlockAt(x, y, z).setType(Random.shuffle(materials.toList).head)
     }
   }
 
@@ -57,6 +57,22 @@ object DeathMazeWorldGenerator {
       (Builder.nodeSize * maze.size, 0, Builder.nodeSize * maze.size),
       Builder.buildingBlocks - AIR
     )
+
+    for (node <- maze.nodes) {
+      for (neighborNode <- maze.neighbours(node)) {
+        // Trump says that we gotta build a wall between those two nodes
+        if (maze.hasDoorBetween(node, neighborNode)) {
+          println(node)
+          println(neighborNode)
+          Builder.fill(
+            world,
+            (node.x * Builder.nodeSize, 1, node.y * Builder.nodeSize),
+            (neighborNode.x * Builder.nodeSize, Builder.height, neighborNode.y * Builder.nodeSize),
+            Builder.buildingBlocks
+          )
+        }
+      }
+    }
 
     world
   }

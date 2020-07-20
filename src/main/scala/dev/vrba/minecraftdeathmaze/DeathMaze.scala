@@ -1,7 +1,11 @@
 package dev.vrba.minecraftdeathmaze
 
+import dev.vrba.minecraftdeathmaze.generators.DeathMazeWorldGenerator
+import org.bukkit.Location
 import org.bukkit.command.{Command, CommandSender}
 import org.bukkit.plugin.java.JavaPlugin
+
+import scala.util.Random
 
 class DeathMaze extends JavaPlugin {
   override def onCommand(sender: CommandSender, command: Command, label: String, args: Array[String]): Boolean = {
@@ -15,6 +19,16 @@ class DeathMaze extends JavaPlugin {
 
   private def startNewDeathMazeSession(): Unit = {
     val players = this.getServer.getOnlinePlayers
-    // TODO: Generate death maze world and spread players across the map
+    val world = DeathMazeWorldGenerator.generateWorld(players.size)
+
+    players.forEach(player => player.teleport(
+      new Location(
+        world,
+        Random.nextInt(10 + (players.size * 2)) * 4 + 2,
+        1,
+        Random.nextInt(10 + (players.size * 2)) * 4 + 2
+      )
+    )
+    )
   }
 }
